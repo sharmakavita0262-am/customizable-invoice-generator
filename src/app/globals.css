@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/*
+ * "Stationery" theme: warm paper tones, ink-dark text and a forest-green
+ * brand colour. Every text/background pair meets WCAG AA (4.5:1); input
+ * borders meet the 3:1 non-text contrast minimum.
+ */
+@theme {
+  --color-paper: #f4f1ea;
+  --color-surface: #fffdf9;
+  --color-ink: #1d1b16;
+  --color-ink-soft: #4a463d;
+  --color-muted: #6b655a;
+  --color-placeholder: #767064;
+  --color-line: #e6e0d4;
+  --color-line-strong: #9a9283;
+  --color-brand: #2f5d50;
+  --color-brand-strong: #244a40;
+  --color-brand-soft: #e8f0ec;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+
+  --shadow-sheet: 0 1px 2px rgb(29 27 22 / 0.06), 0 12px 32px -12px rgb(29 27 22 / 0.18);
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* One consistent, clearly visible focus ring for keyboard users. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+
+/* Native date picker icon follows the ink colour. */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+/* Scrolls normally (wheel, touchpad, keyboard) but draws no scrollbar. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+dialog::backdrop {
+  background: rgb(29 27 22 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+ * Printing / "Save as PDF": only the invoice sheet is printed. App chrome is
+ * marked `print:hidden`, and the sheet drops its on-screen card styling.
+ */
+@page {
+  margin: 14mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .invoice-sheet {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .invoice-sheet tr,
+  .invoice-sheet .avoid-break {
+    break-inside: avoid;
+  }
+}
